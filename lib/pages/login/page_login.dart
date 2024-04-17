@@ -254,9 +254,9 @@ class _LoginMobilePageState extends BaseState<LoginMobilePage> {
                   const Text(
                     'Sign In',
                     style: TextStyle(
-                      // fontFamily: UserSession().getTwinSysInfo()!.headerFont,
-                      fontSize: 30,
-                    ),
+                        // fontFamily: UserSession().getTwinSysInfo()!.headerFont,
+                        fontSize: 30,
+                        color: Colors.white),
                   ),
                   const SizedBox(
                     height: 10,

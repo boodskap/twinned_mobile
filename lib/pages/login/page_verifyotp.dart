@@ -159,7 +159,7 @@ class _VerifyOtpMobilePageState extends BaseState<VerifyOtpMobilePage> {
               const Text(
                 "Powered By",
                 style: TextStyle(
-                  color: poweredByColor,
+                  color: Colors.white,
                   fontSize: 16,
                 ),
               ),
