@@ -377,64 +377,71 @@ class _InfraPageState extends BaseState<InfraPage> {
             children: [
               const SizedBox(height: 10),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 40,
-                      width: 320,
-                      child: SearchBar(
-                        leading: const Icon(Icons.search),
-                        hintText: 'Search',
-                        onChanged: (value) async {
-                          search = value;
-                          if (search.isEmpty) {
-                            search = '*';
-                          }
+                  Expanded(
+                    flex: 90,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        // height: 40,
+                        // width: 320,
+                        child: SearchBar(
+                          leading: const Icon(Icons.search),
+                          hintText: 'Search',
+                          onChanged: (value) async {
+                            search = value;
+                            if (search.isEmpty) {
+                              search = '*';
+                            }
+                            switch (widget.currentView) {
+                              case CurrentView.home:
+                                await _load();
+                                break;
+                              case CurrentView.map:
+                                await mapViewKey.currentState!._load();
+                                break;
+                              case CurrentView.asset:
+                                await assetViewKey.currentState!._load();
+                                break;
+                              case CurrentView.grid:
+                                await gridViewKey.currentState!._load();
+                                break;
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: IconButton(
+                        tooltip: 'reload data',
+                        onPressed: () async {
+                          search = '*';
                           switch (widget.currentView) {
                             case CurrentView.home:
                               await _load();
                               break;
                             case CurrentView.map:
-                              await mapViewKey.currentState!._load();
+                              if (null != mapViewKey.currentState) {
+                                await mapViewKey.currentState!._load();
+                              }
                               break;
                             case CurrentView.asset:
-                              await assetViewKey.currentState!._load();
+                              if (null != assetViewKey.currentState) {
+                                await assetViewKey.currentState!._load();
+                              }
                               break;
                             case CurrentView.grid:
-                              await gridViewKey.currentState!._load();
+                              if (null != gridViewKey.currentState) {
+                                await gridViewKey.currentState!._load();
+                              }
                               break;
                           }
                         },
-                      ),
-                    ),
+                        icon: const Icon(Icons.refresh)),
                   ),
-                  IconButton(
-                      tooltip: 'reload data',
-                      onPressed: () async {
-                        search = '*';
-                        switch (widget.currentView) {
-                          case CurrentView.home:
-                            await _load();
-                            break;
-                          case CurrentView.map:
-                            if (null != mapViewKey.currentState) {
-                              await mapViewKey.currentState!._load();
-                            }
-                            break;
-                          case CurrentView.asset:
-                            if (null != assetViewKey.currentState) {
-                              await assetViewKey.currentState!._load();
-                            }
-                            break;
-                          case CurrentView.grid:
-                            if (null != gridViewKey.currentState) {
-                              await gridViewKey.currentState!._load();
-                            }
-                            break;
-                        }
-                      },
-                      icon: const Icon(Icons.refresh)),
                 ],
               ),
               divider(horizontal: true),
@@ -1283,6 +1290,12 @@ class _InfraGridViewState extends BaseState<_InfraGridView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      const Icon(
+                        Icons.timer,
+                        color: Colors.grey,
+                        size: 18,
+                      ),
+                      divider(horizontal: true),
                       Text(
                         timeago.format(dt, locale: 'en'),
                         style: const TextStyle(

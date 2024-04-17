@@ -1,4 +1,4 @@
-DEVELOPMENT=true
+DEVELOPMENT=false
 
 #Development settings
 
@@ -10,7 +10,7 @@ D_MQTT_WS_PORT=443
 
 #Production settings
 
-P_DOMAIN_KEY=EDYFXLLEGQEUBLJ7
+P_DOMAIN_KEY=0ZXXCA4LDMU73LPP
 P_HOST_NAME=twinned.digital
 P_MQTT_HOST=gw01.twinned.digital
 P_MQTT_TCP_PORT=1883
