@@ -47,6 +47,71 @@ class _ForgotPasswordMobilePageState
     );
   }
 
+  void _showOTPDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              divider(),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'OTP Sent Successfully',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                '6 digit OTP has been sent to your email, Please check it!',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(color: secondaryColor),
+                  ),
+                ),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: secondaryColor),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _doChangePassEmail() async {
     busy();
 
@@ -70,6 +135,7 @@ class _ForgotPasswordMobilePageState
             pin: "",
             pinToken: res.body!.pinToken);
         UserSession().setRegisterDets(dets);
+        _showOTPDialog();
         _showForgotOtpPage(body.userId, res.body!.pinToken);
       } else {
         alert("Error", res.body!.msg);
@@ -108,14 +174,14 @@ class _ForgotPasswordMobilePageState
                   ),
                 ),
                 SizedBox(
-                  height: 180,
+                  height: 160,
                   child: Card(
                     color: Colors.white.withOpacity(0.8),
                     elevation: 5,
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 40,
+                          height: 20,
                         ),
                         Form(
                           key: formKey,
@@ -195,7 +261,7 @@ class _ForgotPasswordMobilePageState
                         );
                       },
                       child: const Text(
-                        "SIGN UP!",
+                        "SignUp!",
                         style: TextStyle(
                             fontSize: 15,
                             color: Colors.white,

@@ -399,16 +399,23 @@ class _SubscriptionsPageState extends BaseState<SubscriptionsPage> {
         // ),
         const SizedBox(height: 10),
         Expanded(
-          child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: _rows.length,
-              itemBuilder: (context, index) {
-                return _rows[index];
-              },
-            ),
-          ),
+          child: _rows.isEmpty
+              ? const Center(
+                  child: Text(
+                    'No subscriptions found',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                )
+              : SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: _rows.length,
+                    itemBuilder: (context, index) {
+                      return _rows[index];
+                    },
+                  ),
+                ),
         ),
       ],
     );
