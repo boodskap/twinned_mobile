@@ -1,0 +1,31 @@
+DEVELOPMENT=true
+
+#Development settings
+
+D_DOMAIN_KEY=JR81BTWZRDU3AIO8
+D_HOST_NAME=twinned.boodskap.io
+D_MQTT_HOST=twinned.boodskap.io
+D_MQTT_TCP_PORT=1883
+D_MQTT_WS_PORT=443
+
+#Production settings
+
+P_DOMAIN_KEY=EDYFXLLEGQEUBLJ7
+P_HOST_NAME=twinned.digital
+P_MQTT_HOST=gw01.twinned.digital
+P_MQTT_TCP_PORT=1883
+P_MQTT_WS_PORT=443
+
+#Common Settings
+EMIL_SUBJECT=Application
+ACTIVATION_TEMPLATE=twinned_activation
+RESET_PSWD_TEMPLATE=twinned_resetpw
+
+APP_TITLE=Boodskap Digital Twin
+APP_FONT=Open Sans
+APP_FONT_SIZE=14
+AP_FONT_COLOR=0
+
+
+P_PORTAL_LINK=https://pay.boodskap.io/p/login/bIY02IdHc4wC8es8ww
+D_PORTAL_LINK=https://pay.boodskap.io/p/login/test_bIY7tt3zDdQw6w8000
