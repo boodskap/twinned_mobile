@@ -1,8 +1,8 @@
-DEVELOPMENT=true
+DEVELOPMENT=false
 
 #Development settings
 
-D_DOMAIN_KEY=JR81BTWZRDU3AIO8
+D_DOMAIN_KEY=0ZXXCA4LDMU73LPP
 D_HOST_NAME=twinned.boodskap.io
 D_MQTT_HOST=twinned.boodskap.io
 D_MQTT_TCP_PORT=1883
