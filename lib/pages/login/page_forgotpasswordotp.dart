@@ -59,7 +59,7 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
     );
   }
 
-  void _showOTPSuccessDialog() {
+  void _showPasswordSuccessDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -86,7 +86,7 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
                 'Password Changed Successfully!',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 16,
                 ),
               ),
               const SizedBox(
@@ -142,7 +142,7 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
 
       if (res.body!.ok) {
         // alert("", "Password changed successfully");
-        _showOTPSuccessDialog();
+        _showPasswordSuccessDialog();
         _showLogin();
       } else {
         alert(
