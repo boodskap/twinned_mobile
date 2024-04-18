@@ -174,14 +174,14 @@ class _ForgotPasswordMobilePageState
                   ),
                 ),
                 SizedBox(
-                  height: 160,
+                  height: 100,
                   child: Card(
                     color: Colors.white.withOpacity(0.8),
                     elevation: 5,
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 20,
+                          height: 5,
                         ),
                         Form(
                           key: formKey,
@@ -261,7 +261,7 @@ class _ForgotPasswordMobilePageState
                         );
                       },
                       child: const Text(
-                        "SignUp!",
+                        "Sign Up!",
                         style: TextStyle(
                             fontSize: 15,
                             color: Colors.white,

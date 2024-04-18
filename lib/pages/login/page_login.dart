@@ -408,7 +408,7 @@ class _LoginMobilePageState extends BaseState<LoginMobilePage> {
                           widget.pageController.jumpToPage(3);
                         },
                         child: const Text(
-                          "SignUp",
+                          "Sign Up",
                           style: TextStyle(fontSize: 18, color: Colors.white),
                         ),
                       ),
