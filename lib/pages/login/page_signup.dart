@@ -24,6 +24,7 @@ class _SignUpMobilePageState extends BaseState<SignUpMobilePage> {
   final TextEditingController _emailController = TextEditingController();
 
   bool isLoading = false;
+  double cardHeight = 230;
 
   final eFormKey = GlobalKey<FormState>();
   final pFormKey = GlobalKey<FormState>();
@@ -79,53 +80,62 @@ class _SignUpMobilePageState extends BaseState<SignUpMobilePage> {
         _showOtpPage(res.body!);
       } else {
         // ignore: use_build_context_synchronously
+        updateCardHeight(true);
         alert('Error', res.body!.msg);
       }
     } catch (e, s) {
       debugPrint('$e');
       debugPrint('$s');
+    } finally {
+      updateCardHeight(false);
+      // ignore: use_build_context_synchronously
+      busy(busy: false);
     }
-    // ignore: use_build_context_synchronously
-    busy(busy: false);
+  }
+
+  void updateCardHeight(bool hasError) {
+    setState(() {
+      cardHeight = hasError ? 280 : 230;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            children: [
-              Center(
-                child: AppLogo(),
-              ),
-              Form(
-                key: eFormKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Register New User',
-                        style: TextStyle(
-                            // fontFamily: UserSession().getTwinSysInfo()!.headerFont,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                            color: Colors.white),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Center(child: AppLogo()),
+                const SizedBox(
+                  height: 30,
+                ),
+                Form(
+                  key: eFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 10),
+                        child: Text(
+                          'Register New User',
+                          style: TextStyle(
+                              // fontFamily: UserSession().getTwinSysInfo()!.headerFont,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              color: Colors.white),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 280,
-                      child: Card(
+                      Card(
                         color: Colors.white.withOpacity(0.8),
                         elevation: 10,
                         child: Column(
                           children: [
                             const SizedBox(
-                              height: 5,
+                              height: 10,
                             ),
                             UseridTextField(
                               hintText: "Enter your email",
@@ -142,97 +152,101 @@ class _SignUpMobilePageState extends BaseState<SignUpMobilePage> {
                               controller: _lnameController,
                               minLength: 1,
                             ),
+                            const SizedBox(
+                              height: 10,
+                            )
                           ],
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: secondaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: primaryColor),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: secondaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(color: primaryColor),
+                          ),
+                          minimumSize: const Size(130, 40),
                         ),
+                        onPressed: () {
+                          debugPrint('Cancel pressed');
+                          widget.pageController.jumpToPage(
+                            0,
+                          );
+                        },
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(
+                            // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
+                            color: primaryColor,
+                            fontSize: 18,
+                          ),
+                        )),
+                    const BusyIndicator(),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: primaryColor,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: const BorderSide(color: secondaryColor)),
                         minimumSize: const Size(130, 40),
                       ),
                       onPressed: () {
-                        debugPrint('Cancel pressed');
-                        widget.pageController.jumpToPage(
-                          0,
-                        );
+                        if (eFormKey.currentState!.validate()) {
+                          _doSignUp();
+                        }
                       },
                       child: const Text(
-                        "Cancel",
+                        "Sign Up",
                         style: TextStyle(
-                          // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
-                          color: primaryColor,
+                          color: secondaryColor,
                           fontSize: 18,
+                          // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
                         ),
-                      )),
-                  const BusyIndicator(),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: secondaryColor)),
-                      minimumSize: const Size(130, 40),
-                    ),
-                    onPressed: () {
-                      if (eFormKey.currentState!.validate()) {
-                        _doSignUp();
-                      }
-                    },
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        color: secondaryColor,
-                        fontSize: 18,
-                        // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Already have an account?',
+                style: TextStyle(
+                  // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
+                  color: Colors.black,
+                  fontSize: 14,
+                ),
               ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Already have an account?',
-                    style: TextStyle(
-                      // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
-                      color: Colors.black,
-                      fontSize: 14,
-                    ),
+              TextButton(
+                onPressed: () {
+                  widget.pageController.jumpToPage(
+                    0,
+                  );
+                },
+                child: const Text(
+                  'Login',
+                  style: TextStyle(
+                    // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
                   ),
-                  TextButton(
-                    onPressed: () {
-                      widget.pageController.jumpToPage(
-                        0,
-                      );
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        // fontFamily: UserSession().getTwinSysInfo()!.labelFont,
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
+          const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
