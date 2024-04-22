@@ -116,7 +116,7 @@ class _PremiseInfraCardState extends BaseState<PremiseInfraCard> {
                           children: [
                             const Icon(
                               Icons.home,
-                              color: Colors.blue,
+                              color: Color(0XFF26648e),
                               size: 25,
                             ),
                             divider(horizontal: true, width: 2),
@@ -125,7 +125,7 @@ class _PremiseInfraCardState extends BaseState<PremiseInfraCard> {
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
-                                  color: Colors.blue,
+                                  color: Color(0XFF5f236b),
                                   overflow: TextOverflow.ellipsis),
                             ),
                           ],
@@ -171,6 +171,7 @@ class _PremiseInfraCardState extends BaseState<PremiseInfraCard> {
           children: [
             Expanded(
               child: Card(
+                color: Color.fromARGB(255, 245, 228, 234),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,6 +212,7 @@ class _PremiseInfraCardState extends BaseState<PremiseInfraCard> {
             ),
             Expanded(
               child: Card(
+                color: Color(0XFFadeee2),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -249,6 +251,7 @@ class _PremiseInfraCardState extends BaseState<PremiseInfraCard> {
           children: [
             Expanded(
               child: Card(
+                color: Color(0XFFe5efc1),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -283,6 +286,7 @@ class _PremiseInfraCardState extends BaseState<PremiseInfraCard> {
             ),
             Expanded(
               child: Card(
+                color: Color(0XFFffe3be),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

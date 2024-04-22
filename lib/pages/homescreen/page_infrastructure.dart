@@ -382,9 +382,9 @@ class _InfraPageState extends BaseState<InfraPage> {
                   Expanded(
                     flex: 90,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(left: 8),
                       child: SizedBox(
-                        // height: 40,
+                        height: 40,
                         // width: 320,
                         child: SearchBar(
                           leading: const Icon(Icons.search),
@@ -444,16 +444,16 @@ class _InfraPageState extends BaseState<InfraPage> {
                   ),
                 ],
               ),
-              divider(horizontal: true),
+              // divider(horizontal: true),
               const Padding(
                 padding: EdgeInsets.only(left: 190),
                 child: Center(child: BusyIndicator()),
               ),
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.premise)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -461,6 +461,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Premises: $totalPremises',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -470,7 +471,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.facility)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -478,6 +479,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Facilities: $totalFacility',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -487,7 +489,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.floor)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -495,6 +497,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Floors: $totalFloor',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -504,7 +507,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.asset)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -512,6 +515,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Assets: $totalAsset',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -521,7 +525,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.device)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -529,6 +533,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Devices: $totalDevice',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
