@@ -128,7 +128,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
                                 const Icon(
                                   Icons.home,
                                   size: 16,
-                                  color: Colors.blue,
+                                  color: Color(0XFF26648e),
                                 ),
                                 divider(horizontal: true, width: 2),
                                 Text(
@@ -136,7 +136,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
-                                      color: Colors.blue,
+                                      color: Color(0XFF5f236b),
                                       overflow: TextOverflow.ellipsis),
                                 ),
                               ],
@@ -146,7 +146,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
                                 const Icon(
                                   Icons.business,
                                   size: 16,
-                                  color: Colors.blue,
+                                  color: Color(0XFF26648e),
                                 ),
                                 divider(horizontal: true, width: 2),
                                 Text(
@@ -154,7 +154,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
                                   style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 16,
-                                      color: Colors.blue,
+                                      color: Color(0XFF5f236b),
                                       overflow: TextOverflow.ellipsis),
                                 ),
                               ],
@@ -202,6 +202,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
           children: [
             Expanded(
               child: Card(
+                color: Color.fromARGB(255, 245, 228, 234),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,6 +237,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
             ),
             Expanded(
               child: Card(
+                color: Color(0XFFadeee2),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -264,6 +266,7 @@ class _FacilityInfraCardState extends BaseState<FacilityInfraCard> {
             ),
             Expanded(
               child: Card(
+                color: Color(0XFFe5efc1),
                 child: Column(
                   children: [
                     Padding(

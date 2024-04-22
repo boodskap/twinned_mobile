@@ -24,7 +24,7 @@ Widget buildLink(
   IconData icon,
   Function open, {
   // Color color = const Color(0xFF26561A),
-  Color color = const Color(0xFF0e720a),
+  Color color = const Color(0XFF26648e),
 }) {
   return InkWell(
     onTap: () {
@@ -41,7 +41,7 @@ Widget buildLink(
             text: TextSpan(
                 text: text,
                 style: const TextStyle(
-                    color: Colors.blue,
+                    color: Color(0XFF5f236b),
                     fontWeight: FontWeight.bold,
                     fontSize: 14))),
       ],
