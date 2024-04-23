@@ -2,6 +2,7 @@ import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:nocode_commons/core/base_state.dart';
@@ -64,6 +65,7 @@ class _InfraPageState extends BaseState<InfraPage> {
   final GlobalKey<_InfraMapViewState> mapViewKey = GlobalKey();
   final GlobalKey<_InfraGridViewState> gridViewKey = GlobalKey();
   final GlobalKey<_InfraAssetViewState> assetViewKey = GlobalKey();
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -385,29 +387,43 @@ class _InfraPageState extends BaseState<InfraPage> {
                       padding: const EdgeInsets.only(left: 8),
                       child: SizedBox(
                         height: 40,
-                        // width: 320,
                         child: SearchBar(
                           leading: const Icon(Icons.search),
                           hintText: 'Search',
-                          onChanged: (value) async {
+                          controller: searchController,
+                          trailing: [
+                            GestureDetector(
+                              onTap: () {
+                                searchController.clear();
+                                search = '*';
+
+                                switch (widget.currentView) {
+                                  case CurrentView.home:
+                                    _load();
+                                    break;
+                                  case CurrentView.map:
+                                    mapViewKey.currentState!._load();
+                                    break;
+                                  case CurrentView.asset:
+                                    assetViewKey.currentState!._load();
+                                    break;
+                                  case CurrentView.grid:
+                                    gridViewKey.currentState!._load();
+                                    break;
+                                }
+                              },
+                              child: const Icon(
+                                Icons.clear,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                          onChanged: (value) {
                             search = value;
                             if (search.isEmpty) {
                               search = '*';
                             }
-                            switch (widget.currentView) {
-                              case CurrentView.home:
-                                await _load();
-                                break;
-                              case CurrentView.map:
-                                await mapViewKey.currentState!._load();
-                                break;
-                              case CurrentView.asset:
-                                await assetViewKey.currentState!._load();
-                                break;
-                              case CurrentView.grid:
-                                await gridViewKey.currentState!._load();
-                                break;
-                            }
+                            _load();
                           },
                         ),
                       ),
@@ -808,13 +824,35 @@ class _InfraMapViewState extends BaseState<_InfraMapView> {
                             case TwinInfraType.premise:
                               return AlertDialog(
                                 content: SizedBox(
-                                  width: 500,
-                                  height: 500,
-                                  child: PremiseInfraCard(
-                                    premise: entity,
-                                    popOnSelect: true,
-                                    totalPremises:
-                                        widget.state._premises.length,
+                                  width: 550,
+                                  height: 550,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Icon(
+                                                Icons.clear_outlined,
+                                                color: Colors.blue,
+                                              )),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 500,
+                                        width: 500,
+                                        child: PremiseInfraCard(
+                                          premise: entity,
+                                          popOnSelect: true,
+                                          totalPremises:
+                                              widget.state._premises.length,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
