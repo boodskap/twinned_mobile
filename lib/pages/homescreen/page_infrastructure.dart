@@ -833,13 +833,14 @@ class _InfraMapViewState extends BaseState<_InfraMapView> {
                                             MainAxisAlignment.end,
                                         children: [
                                           GestureDetector(
-                                              onTap: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Icon(
-                                                Icons.clear_outlined,
-                                                color: Colors.blue,
-                                              )),
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Icon(
+                                              Icons.clear_outlined,
+                                              color: Colors.blue,
+                                            ),
+                                          ),
                                         ],
                                       ),
                                       SizedBox(
