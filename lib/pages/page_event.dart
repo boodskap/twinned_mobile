@@ -103,94 +103,108 @@ class _EventPageState extends BaseState<EventPage> {
           // ),
           Expanded(
             flex: 20,
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    const BusyIndicator(),
-                    divider(horizontal: true),
-                    SizedBox(
-                      width: 200,
-                      height: 30,
-                      child: SearchBar(
-                          hintText: 'Search',
-                          leading: const Icon(Icons.search),
-                          onChanged: (String value) {
-                            search = value.isEmpty ? '*' : value;
-                            setup();
-                          }),
+            child: tableData.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No events found',
+                      style: TextStyle(fontSize: 16),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.only(left: 4, right: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  )
+                : Column(
                     children: [
-                      Expanded(
-                        child: Text(
-                          'Icon',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          const BusyIndicator(),
+                          divider(horizontal: true),
+                          SizedBox(
+                            width: 200,
+                            height: 30,
+                            child: SearchBar(
+                                hintText: 'Search',
+                                leading: const Icon(Icons.search),
+                                onChanged: (String value) {
+                                  search = value.isEmpty ? '*' : value;
+                                  setup();
+                                }),
                           ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 4, right: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Icon',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                'Created Time',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Text(
+                                'Updated Time',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       Expanded(
-                        child: Text(
-                          'Created Time',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
+                        child: tableData.isEmpty
+                            ? const Center(
+                                child: Text(
+                                  'No events found',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              )
+                            : ListView.builder(
+                                itemCount: currentPageData.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  int overallIndex = startIndex + index;
+                                  return Container(
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        bottom: BorderSide(
+                                          color: Colors.grey,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                    ),
+                                    padding: const EdgeInsets.all(8),
+                                    child: _buildTableRows()[overallIndex],
+                                  );
+                                },
+                              ),
                       ),
-                      Expanded(
-                        child: Text(
-                          'Updated Time',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
+                      CustomPagination(
+                        total: _buildTableRows().length,
+                        rowsPerPage: _selectedRowsPerPage,
+                        currentPage: _currentPage,
+                        onPageChanged: _updatePage,
+                        onRowsPerPageChanged: _onRowsPerPageChanged,
+                        rowsPerPageOptions: _rowsPerPageOptions,
+                        selectedRowsPerPage: _selectedRowsPerPage,
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: currentPageData.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      int overallIndex = startIndex + index;
-                      return Container(
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Colors.grey,
-                              width: 1.0,
-                            ),
-                          ),
-                        ),
-                        padding: const EdgeInsets.all(8),
-                        child: _buildTableRows()[overallIndex],
-                      );
-                    },
-                  ),
-                ),
-                CustomPagination(
-                  total: _buildTableRows().length,
-                  rowsPerPage: _selectedRowsPerPage,
-                  currentPage: _currentPage,
-                  onPageChanged: _updatePage,
-                  onRowsPerPageChanged: _onRowsPerPageChanged,
-                  rowsPerPageOptions: _rowsPerPageOptions,
-                  selectedRowsPerPage: _selectedRowsPerPage,
-                ),
-              ],
-            ),
           ),
         ],
       ),
@@ -198,8 +212,29 @@ class _EventPageState extends BaseState<EventPage> {
   }
 
   List<Widget> _buildTableRows() {
+    if (tableData.isEmpty) {
+      return [
+        const Center(
+          child: Text(
+            'No events found',
+            style: TextStyle(fontSize: 16),
+          ),
+        ),
+      ];
+    }
     List<twin.TriggeredEvent> last25Devices =
         tableData.sublist(max(0, tableData.length - 25));
+
+    // if (last25Devices.isEmpty) {
+    //   return [
+    //     Center(
+    //       child: Text(
+    //         'No events found',
+    //         style: TextStyle(fontSize: 16),
+    //       ),
+    //     ),
+    //   ];
+    // }
 
     return last25Devices.map((data) {
       DateTime reportingStamp =
@@ -218,7 +253,7 @@ class _EventPageState extends BaseState<EventPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
+            const Expanded(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -265,7 +300,7 @@ class _EventPageState extends BaseState<EventPage> {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'Name :',
@@ -281,11 +316,11 @@ class _EventPageState extends BaseState<EventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'Type :',
@@ -301,11 +336,11 @@ class _EventPageState extends BaseState<EventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'Delivery Status :',
@@ -321,11 +356,11 @@ class _EventPageState extends BaseState<EventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'Email Subject :',
@@ -341,11 +376,11 @@ class _EventPageState extends BaseState<EventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'Email Content :',
@@ -361,11 +396,11 @@ class _EventPageState extends BaseState<EventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'SMS :',
@@ -381,11 +416,11 @@ class _EventPageState extends BaseState<EventPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
+                        const Expanded(
                           flex: 2,
                           child: Text(
                             'VOice :',
@@ -452,16 +487,16 @@ class CustomPagination extends StatelessWidget {
                 }).toList(),
                 onChanged: onRowsPerPageChanged,
               ),
-              SizedBox(width: 16.0),
+              const SizedBox(width: 16.0),
               Text('Page $currentPage of $totalPages'),
               IconButton(
-                icon: Icon(Icons.chevron_left),
+                icon: const Icon(Icons.chevron_left),
                 onPressed: currentPage > 1
                     ? () => onPageChanged(currentPage - 1)
                     : null,
               ),
               IconButton(
-                icon: Icon(Icons.chevron_right),
+                icon: const Icon(Icons.chevron_right),
                 onPressed: currentPage < totalPages
                     ? () => onPageChanged(currentPage + 1)
                     : null,
