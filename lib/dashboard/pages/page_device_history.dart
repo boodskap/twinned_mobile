@@ -5,6 +5,7 @@ import 'package:nocode_commons/core/base_state.dart';
 import 'package:nocode_commons/core/ui.dart';
 import 'package:nocode_commons/core/user_session.dart';
 import 'package:nocode_commons/util/nocode_utils.dart';
+import 'package:nocode_commons/widgets/default_deviceview.dart';
 import 'package:nocode_commons/widgets/device_view.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:twinned_api/api/twinned.swagger.dart' as twin;
@@ -536,26 +537,54 @@ class _DeviceHistoryPageState extends BaseState<DeviceHistoryPage>
                   child: SizedBox(
                     height: double.maxFinite,
                     child: Center(
-                      child: SimpleDeviceView(
+                    child: DefaultDeviceView(
+                        // deviceData: data,
+                        deviceId: data.deviceId,
                         twinned: UserSession.twin,
                         authToken: UserSession().getAuthToken(),
-                        data: data,
-                        liveData: false,
-                        height: 300,
-                        topMenuHeight: 35,
-                        bottomMenuHeight: 35,
-                        onDeviceDoubleTapped: null,
-                        onDeviceAnalyticsTapped: () async {
+                        onDeviceAnalyticsTapped: (dd) async {
+                          await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DeviceAnalyticsPage(
+                                        data: data,
+                                      )));
+                        },
+                        onDeviceDoubleTapped: (dd) async {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DeviceAnalyticsPage(
-                                data: data,
-                              ),
-                            ),
+                                builder: (context) => DeviceHistoryPage(
+                                      deviceName: data.deviceName ?? '-',
+                                      deviceId: data.deviceId,
+                                      modelId: data.modelId,
+                                      adminMode: true,
+                                    )),
                           );
                         },
                       ),
+                   
+                      // child: SimpleDeviceView(
+                      //   twinned: UserSession.twin,
+                      //   authToken: UserSession().getAuthToken(),
+                      //   data: data,
+                      //   liveData: false,
+                      //   height: 300,
+                      //   topMenuHeight: 35,
+                      //   bottomMenuHeight: 35,
+                      //   onDeviceDoubleTapped: null,
+                      //   onDeviceAnalyticsTapped: () async {
+                      //     await Navigator.push(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //         builder: (context) => DeviceAnalyticsPage(
+                      //           data: data,
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
+                   
                     ),
                   ),
                 ),

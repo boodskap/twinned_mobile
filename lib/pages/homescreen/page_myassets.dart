@@ -17,7 +17,7 @@ import 'package:uuid/uuid.dart';
 typedef BasicInfoCallback = void Function(
     String name, String? description, String? tags);
 
-enum AssetViewType { card, grid }
+enum AssetViewType { card, /*grid*/ }
 
 class MyAssetsPage extends StatefulWidget {
   final AssetGroup? group;
@@ -71,7 +71,7 @@ class _MyAssetsPageState extends BaseState<MyAssetsPage> {
             body: const FilterSearchReq(search: '*', page: 0, size: 1000));
         if (validateResponse(ddRes, shouldAlert: false)) {
           setState(() {
-            viewType = AssetViewType.grid;
+            viewType = AssetViewType.card;
             _data.addAll(ddRes.body!.values!);
           });
         }
@@ -79,7 +79,7 @@ class _MyAssetsPageState extends BaseState<MyAssetsPage> {
     });
     loading = false;
     setState(() {
-      viewType = AssetViewType.grid;
+      viewType = AssetViewType.card;
     });
   }
 
@@ -94,14 +94,14 @@ class _MyAssetsPageState extends BaseState<MyAssetsPage> {
       );
       if (validateResponse(ddRes, shouldAlert: false)) {
         setState(() {
-          viewType = AssetViewType.grid;
+          viewType = AssetViewType.card;
           _data.addAll(ddRes.body!.values!);
         });
       }
     });
     loading = false;
     setState(() {
-      viewType = AssetViewType.grid;
+      viewType = AssetViewType.card;
     });
   }
 
@@ -198,9 +198,9 @@ class _MyAssetsPageState extends BaseState<MyAssetsPage> {
                       switch (viewType) {
                         case AssetViewType.card:
                           setState(() {});
-                        case AssetViewType.grid:
-                          await _load();
-                          break;
+                        // case AssetViewType.grid:
+                        //   await _load();
+                        //   break;
                       }
                     },
                     icon: const Icon(Icons.refresh)),
@@ -219,28 +219,28 @@ class _MyAssetsPageState extends BaseState<MyAssetsPage> {
                             ? Colors.blue
                             : null)),
                 divider(horizontal: true),
-                IconButton(
-                    tooltip: 'Data Grid View',
-                    onPressed: viewType == AssetViewType.grid
-                        ? null
-                        : () async {
-                            await _load();
-                          },
-                    icon: Icon(Icons.view_compact_outlined,
-                        color: viewType == AssetViewType.grid
-                            ? Colors.blue
-                            : null)),
-                divider(horizontal: true),
+                // IconButton(
+                //     tooltip: 'Data Grid View',
+                //     onPressed: viewType == AssetViewType.grid
+                //         ? null
+                //         : () async {
+                //             await _load();
+                //           },
+                //     icon: Icon(Icons.view_compact_outlined,
+                //         color: viewType == AssetViewType.grid
+                //             ? Colors.blue
+                //             : null)),
+                // divider(horizontal: true),
               ],
             ),
             divider(),
             if (viewType == AssetViewType.card) _buildCards(context),
-            if (viewType == AssetViewType.grid)
-              AssetDataGridView(
-                key: Key(const Uuid().v4()),
-                group: widget.group,
-                filter: widget.filter,
-              ),
+            // if (viewType == AssetViewType.grid)
+            //   AssetDataGridView(
+            //     key: Key(const Uuid().v4()),
+            //     group: widget.group,
+            //     filter: widget.filter,
+            //   ),
           ],
         ),
       ),
