@@ -460,14 +460,10 @@ class _AssetDataGridViewState extends BaseState<AssetDataGridView> {
                               onTap: () {
                                 Navigator.pop(context);
                               },
-                              child: Container(
-                                decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                ),
-                                padding: const EdgeInsets.all(4),
-                                child: const Icon(Icons.close_outlined,
-                                    color: Colors.white, size: 18),
+                              child: const Icon(
+                                Icons.close_outlined,
+                                color: primaryColor,
+                                size: 22,
                               ),
                             )
                           ],
@@ -600,8 +596,15 @@ class _AssetDataGridViewState extends BaseState<AssetDataGridView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: fieldWidgets,
                       ),
-                      Row(mainAxisAlignment: MainAxisAlignment.end,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          const Icon(
+                            Icons.timer,
+                            color: Colors.grey,
+                            size: 18,
+                          ),
+                          divider(horizontal: true),
                           Text(
                             timeago.format(dt, locale: 'en'),
                             style: const TextStyle(
@@ -650,29 +653,31 @@ class _AssetDataGridViewState extends BaseState<AssetDataGridView> {
       );
     }
 
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SizedBox(
-          width: MediaQuery.of(context).size.width,
-          height: 500,
-          child: Accordion(
-            maxOpenSections: 1,
-            headerBorderColor: Colors.indigo,
-            headerBorderColorOpened: Colors.transparent,
-            // headerBorderWidth: 1,
-            headerBackgroundColorOpened: Colors.green,
-            contentBackgroundColor: Colors.white,
-            contentBorderColor: Colors.green,
-            contentBorderWidth: 3,
-            contentHorizontalPadding: 20,
-            scaleWhenAnimating: true,
-            openAndCloseAnimation: true,
-            headerPadding:
-                const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-            sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
-            sectionClosingHapticFeedback: SectionHapticFeedback.light,
-            children: _sections,
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 500,
+            child: Accordion(
+              maxOpenSections: 1,
+              headerBorderColor: Colors.indigo,
+              headerBorderColorOpened: Colors.transparent,
+              // headerBorderWidth: 1,
+              headerBackgroundColorOpened: Colors.green,
+              contentBackgroundColor: Colors.white,
+              contentBorderColor: Colors.green,
+              contentBorderWidth: 3,
+              contentHorizontalPadding: 20,
+              scaleWhenAnimating: true,
+              openAndCloseAnimation: true,
+              headerPadding:
+                  const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+              sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
+              sectionClosingHapticFeedback: SectionHapticFeedback.light,
+              children: _sections,
+            ),
           ),
         ),
       ),

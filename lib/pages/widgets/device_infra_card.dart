@@ -262,7 +262,7 @@ class _DeviceInfraCardState extends BaseState<DeviceInfraCard> {
                                     const Icon(
                                       Icons.view_comfy,
                                       size: 10,
-                                      color: Colors.blue,
+                                      color: Color(0XFF26648e),
                                     ),
                                     divider(horizontal: true, width: 2),
                                     Text(
@@ -270,7 +270,7 @@ class _DeviceInfraCardState extends BaseState<DeviceInfraCard> {
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 10,
-                                          color: Colors.blue,
+                                          color: Color(0XFF5f236b),
                                           overflow: TextOverflow.ellipsis),
                                     ),
                                   ],
@@ -285,7 +285,7 @@ class _DeviceInfraCardState extends BaseState<DeviceInfraCard> {
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
-                              color: Colors.blue,
+                              color: Color(0XFF5f236b),
                               overflow: TextOverflow.ellipsis),
                         ),
                       ],

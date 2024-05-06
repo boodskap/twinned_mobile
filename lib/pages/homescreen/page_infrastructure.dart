@@ -2,6 +2,7 @@ import 'package:accordion/accordion.dart';
 import 'package:accordion/controllers.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:nocode_commons/core/base_state.dart';
@@ -64,6 +65,7 @@ class _InfraPageState extends BaseState<InfraPage> {
   final GlobalKey<_InfraMapViewState> mapViewKey = GlobalKey();
   final GlobalKey<_InfraGridViewState> gridViewKey = GlobalKey();
   final GlobalKey<_InfraAssetViewState> assetViewKey = GlobalKey();
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
@@ -377,76 +379,97 @@ class _InfraPageState extends BaseState<InfraPage> {
             children: [
               const SizedBox(height: 10),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 40,
-                      width: 320,
-                      child: SearchBar(
-                        leading: const Icon(Icons.search),
-                        hintText: 'Search',
-                        onChanged: (value) async {
-                          search = value;
-                          if (search.isEmpty) {
-                            search = '*';
-                          }
+                  Expanded(
+                    flex: 90,
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8),
+                      child: SizedBox(
+                        height: 40,
+                        child: SearchBar(
+                          leading: const Icon(Icons.search),
+                          hintText: 'Search',
+                          controller: searchController,
+                          trailing: [
+                            GestureDetector(
+                              onTap: () {
+                                searchController.clear();
+                                search = '*';
+
+                                switch (widget.currentView) {
+                                  case CurrentView.home:
+                                    _load();
+                                    break;
+                                  case CurrentView.map:
+                                    mapViewKey.currentState!._load();
+                                    break;
+                                  case CurrentView.asset:
+                                    assetViewKey.currentState!._load();
+                                    break;
+                                  case CurrentView.grid:
+                                    gridViewKey.currentState!._load();
+                                    break;
+                                }
+                              },
+                              child: const Icon(
+                                Icons.clear,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                          onChanged: (value) {
+                            search = value;
+                            if (search.isEmpty) {
+                              search = '*';
+                            }
+                            _load();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: IconButton(
+                        tooltip: 'reload data',
+                        onPressed: () async {
+                          search = '*';
                           switch (widget.currentView) {
                             case CurrentView.home:
                               await _load();
                               break;
                             case CurrentView.map:
-                              await mapViewKey.currentState!._load();
+                              if (null != mapViewKey.currentState) {
+                                await mapViewKey.currentState!._load();
+                              }
                               break;
                             case CurrentView.asset:
-                              await assetViewKey.currentState!._load();
+                              if (null != assetViewKey.currentState) {
+                                await assetViewKey.currentState!._load();
+                              }
                               break;
                             case CurrentView.grid:
-                              await gridViewKey.currentState!._load();
+                              if (null != gridViewKey.currentState) {
+                                await gridViewKey.currentState!._load();
+                              }
                               break;
                           }
                         },
-                      ),
-                    ),
+                        icon: const Icon(Icons.refresh)),
                   ),
-                  IconButton(
-                      tooltip: 'reload data',
-                      onPressed: () async {
-                        search = '*';
-                        switch (widget.currentView) {
-                          case CurrentView.home:
-                            await _load();
-                            break;
-                          case CurrentView.map:
-                            if (null != mapViewKey.currentState) {
-                              await mapViewKey.currentState!._load();
-                            }
-                            break;
-                          case CurrentView.asset:
-                            if (null != assetViewKey.currentState) {
-                              await assetViewKey.currentState!._load();
-                            }
-                            break;
-                          case CurrentView.grid:
-                            if (null != gridViewKey.currentState) {
-                              await gridViewKey.currentState!._load();
-                            }
-                            break;
-                        }
-                      },
-                      icon: const Icon(Icons.refresh)),
                 ],
               ),
-              divider(horizontal: true),
+              // divider(horizontal: true),
               const Padding(
                 padding: EdgeInsets.only(left: 190),
                 child: Center(child: BusyIndicator()),
               ),
-              const SizedBox(height: 10),
+              // const SizedBox(height: 10),
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.premise)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -454,6 +477,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Premises: $totalPremises',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -463,7 +487,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.facility)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -471,6 +495,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Facilities: $totalFacility',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -480,7 +505,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.floor)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -488,6 +513,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Floors: $totalFloor',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -497,7 +523,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.asset)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -505,6 +531,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Assets: $totalAsset',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -514,7 +541,7 @@ class _InfraPageState extends BaseState<InfraPage> {
               if (widget.currentView == CurrentView.home)
                 if (widget.type == TwinInfraType.device)
                   Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
@@ -522,6 +549,7 @@ class _InfraPageState extends BaseState<InfraPage> {
                           'Total No of Devices: $totalDevice',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
+                            color: Color(0XFF26648e),
                             fontSize: 18,
                           ),
                         ),
@@ -796,13 +824,36 @@ class _InfraMapViewState extends BaseState<_InfraMapView> {
                             case TwinInfraType.premise:
                               return AlertDialog(
                                 content: SizedBox(
-                                  width: 500,
-                                  height: 500,
-                                  child: PremiseInfraCard(
-                                    premise: entity,
-                                    popOnSelect: true,
-                                    totalPremises:
-                                        widget.state._premises.length,
+                                  width: 550,
+                                  height: 550,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Icon(
+                                              Icons.clear_outlined,
+                                              color: Colors.blue,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 500,
+                                        width: 500,
+                                        child: PremiseInfraCard(
+                                          premise: entity,
+                                          popOnSelect: true,
+                                          totalPremises:
+                                              widget.state._premises.length,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
@@ -1283,6 +1334,12 @@ class _InfraGridViewState extends BaseState<_InfraGridView> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
+                      const Icon(
+                        Icons.timer,
+                        color: Colors.grey,
+                        size: 18,
+                      ),
+                      divider(horizontal: true),
                       Text(
                         timeago.format(dt, locale: 'en'),
                         style: const TextStyle(

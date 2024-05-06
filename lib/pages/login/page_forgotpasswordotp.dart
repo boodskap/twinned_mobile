@@ -59,6 +59,66 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
     );
   }
 
+  void _showPasswordSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              divider(),
+              Container(
+                decoration: const BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                padding: const EdgeInsets.all(8),
+                child: const Icon(
+                  Icons.check,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              const SizedBox(height: 16),
+              const Text(
+                'Password Changed Successfully!',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    side: const BorderSide(color: secondaryColor),
+                  ),
+                ),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: secondaryColor),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _doEnterPass() async {
     busy();
 
@@ -81,7 +141,8 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
       );
 
       if (res.body!.ok) {
-        alert("", "Password changed successfully");
+        // alert("", "Password changed successfully");
+        _showPasswordSuccessDialog();
         _showLogin();
       } else {
         alert(
@@ -114,9 +175,9 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
               const Text(
                 'OTP And Password',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.white),
               ),
               OtpForm(
                 pinController: _pinController,
@@ -189,8 +250,8 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: primaryColor,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+                      borderRadius: BorderRadius.circular(10),
+                      side: BorderSide(color: secondaryColor)),
                   minimumSize: const Size(355, 50),
                 ),
                 onPressed: () async {
@@ -238,7 +299,7 @@ class _ForgotOtpMobilePageState extends BaseState<ForgotOtpMobilePage> {
               const Text(
                 "Powered By",
                 style: TextStyle(
-                  color: poweredByColor,
+                  color: Colors.white,
                   fontSize: 16,
                 ),
               ),
