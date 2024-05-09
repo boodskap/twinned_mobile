@@ -1,17 +1,15 @@
 import 'package:accordion/accordion.dart';
-import 'package:accordion/controllers.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:nocode_commons/core/base_state.dart';
 import 'package:nocode_commons/core/constants.dart';
 import 'package:nocode_commons/core/user_session.dart';
 import 'package:nocode_commons/widgets/default_assetview.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:nocode_commons/widgets/default_deviceview.dart';
 import 'package:twinned_api/api/twinned.swagger.dart';
-import 'package:twinned_mobile/core/app_settings.dart';
+import 'package:twinned_mobile/dashboard/pages/page_device_analytics.dart';
 import 'package:twinned_mobile/dashboard/pages/page_device_history.dart';
 import 'package:twinned_mobile/dashboard/pages/page_map.dart';
 import 'package:twinned_mobile/pages/widgets/asset_infra_card.dart';
@@ -239,7 +237,7 @@ class _InfraPageState extends BaseState<InfraPage> {
     final isSelected = currentView == targetView;
     final iconColor = isSelected
         ? const Color(0xff501b1d)
-        : Color(0XFF737273).withOpacity(.8);
+        : const Color(0XFF737273).withOpacity(.8);
     // final borderColor = isSelected ? Colors.white : const Color(0XFF263571);
 
     return IconButton(
@@ -977,7 +975,7 @@ class _InfraAssetViewState extends BaseState<_InfraAssetView> {
           apikey: UserSession().getAuthToken(), size: 10000);
 
       if (validateResponse(aRes)) {
-        _assetIds.addAll(aRes.body!.values!);
+        _assetIds.addAll(aRes.body!.values);
       }
     });
 
@@ -1143,224 +1141,51 @@ class _InfraGridViewState extends BaseState<_InfraGridView> {
     List<Tuple<String, String>> fields,
     Map<String, Tuple<String, String>> labels,
   ) {
-    List<Widget> expansionTiles = [];
-
-    for (var dd in data) {
-      var dt = DateTime.fromMillisecondsSinceEpoch(dd.updatedStamp);
-      Map<String, dynamic> dynData = dd.data as Map<String, dynamic>;
-
-      List<Widget> fieldWidgets = [];
-      for (Tuple<String, String> f in fields) {
-        String label = labels[f.key]?.value ?? '-';
-        String value = dynData[f.key]?.toString() ?? '-';
-        fieldWidgets.add(
-          Row(
-            children: [
-              Expanded(child: Text('$label: ')),
-              Expanded(
-                child: Text(
-                  value,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      }
-
-      expansionTiles.add(
-        ExpansionTile(
-          shape: const Border(bottom: BorderSide.none),
-          title: Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DeviceHistoryPage(
-                        deviceName: dd.deviceName ?? '-',
-                        deviceId: dd.deviceId,
-                        modelId: dd.modelId,
-                        adminMode: false,
-                      ),
-                    ),
-                  );
-                },
-                child: Text(
-                  dd.deviceName ?? '-',
-                  style: const TextStyle(
-                    color: Colors.blue,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ),
-              divider(horizontal: true, width: 20),
-              InkWell(
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              "Infrastructure Info",
-                              style: TextStyle(
-                                  color: primaryColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: const Icon(
-                                Icons.close_outlined,
-                                color: primaryColor,
-                                size: 22,
-                              ),
-                            ),
-                          ],
-                        ),
-                        content: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Row(
-                              children: [
-                                const Expanded(
-                                  child: Text("Premise : "),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dd.premise ?? '-',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                const Expanded(
-                                  child: Text("Facility : "),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dd.facility ?? '-',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                const Expanded(
-                                  child: Text("Floor : "),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dd.floor ?? '-',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                const Expanded(
-                                  child: Text("Asset : "),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dd.asset ?? '-',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Expanded(
-                                  child: Text("Assigned Devices : "),
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    dd.deviceName ?? '-',
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-                child: const Icon(
-                  Icons.info_outline,
-                  size: 18,
-                ),
-              ),
-            ],
-          ),
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: fieldWidgets,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      const Icon(
-                        Icons.timer,
-                        color: Colors.grey,
-                        size: 18,
-                      ),
-                      divider(horizontal: true),
-                      Text(
-                        timeago.format(dt, locale: 'en'),
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 12,
-                          overflow: TextOverflow.ellipsis,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: data.map((dd) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              elevation: 3,
+              child: SizedBox(
+                height: 400,
+                width: 600,
+                child: DefaultDeviceView(
+                  deviceData: dd,
+                  deviceId: dd.deviceId,
+                  twinned: UserSession.twin,
+                  authToken: UserSession().getAuthToken(),
+                  onDeviceAnalyticsTapped: (dd) async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeviceAnalyticsPage(
+                          data: dd,
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    );
+                  },
+                  onDeviceDoubleTapped: (dd) async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DeviceHistoryPage(
+                          deviceName: dd.deviceName ?? '-',
+                          deviceId: dd.deviceId,
+                          modelId: dd.modelId,
+                          adminMode: true,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
-          ],
-        ),
-      );
-    }
-
-    return ListView(
-      shrinkWrap: true,
-      children: expansionTiles,
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -1383,28 +1208,21 @@ class _InfraGridViewState extends BaseState<_InfraGridView> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 600,
-        child: Accordion(
-          maxOpenSections: 1,
-          headerBorderColor: Colors.indigo,
-          headerBorderColorOpened: Colors.transparent,
-          // headerBorderWidth: 1,
-          headerBackgroundColorOpened: Colors.green,
-          contentBackgroundColor: Colors.white,
-          contentBorderColor: Colors.green,
-          contentBorderWidth: 3,
-          contentHorizontalPadding: 20,
-          scaleWhenAnimating: true,
-          openAndCloseAnimation: true,
-          headerPadding:
-              const EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-          sectionOpeningHapticFeedback: SectionHapticFeedback.heavy,
-          sectionClosingHapticFeedback: SectionHapticFeedback.light,
-          children: _sections,
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: _sections.map((section) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: section.content,
+                ),
+              ],
+            );
+          }).toList(),
         ),
       ),
     );

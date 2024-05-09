@@ -538,7 +538,7 @@ class _DeviceHistoryPageState extends BaseState<DeviceHistoryPage>
                     height: double.maxFinite,
                     child: Center(
                     child: DefaultDeviceView(
-                        // deviceData: data,
+                        deviceData: data,
                         deviceId: data.deviceId,
                         twinned: UserSession.twin,
                         authToken: UserSession().getAuthToken(),
