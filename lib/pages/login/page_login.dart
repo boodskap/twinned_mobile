@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:nocode_commons/core/base_state.dart';
 import 'package:nocode_commons/core/constants.dart';
 import 'package:nocode_commons/core/user_session.dart';
@@ -351,7 +352,7 @@ class _LoginMobilePageState extends BaseState<LoginMobilePage> {
                           minimumSize: const Size(140, 40),
                         ),
                         onPressed: () {
-                          Navigator.pop(context);
+                          SystemNavigator.pop();
                         },
                         child: const Text(
                           "Cancel",
