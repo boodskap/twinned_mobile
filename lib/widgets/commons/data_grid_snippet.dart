@@ -15,7 +15,10 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:twinned_mobile/dashboard/pages/page_device_analytics.dart';
 import 'package:twinned_mobile/dashboard/pages/page_device_history.dart';
 import 'package:twinned_mobile/dashboard/pages/page_model_grid.dart';
-import 'package:twinned_widgets/twinned_widgets.dart' as widgets;
+// import 'package:twinned_widgets/twinned_widgets.dart' as widgets;
+
+import 'package:nocode_commons/twinned_widgets.dart' as widgets;
+
 import 'package:chopper/chopper.dart' as chopper;
 
 enum FilterType { none, data, field, group, model }
@@ -465,18 +468,18 @@ class DataGridSnippetState extends BaseState<DataGridSnippet> {
     }
 
     return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Expanded(
-      child: DataTable2(
-        dataRowHeight: 100,
-        columnSpacing: 12,
-        horizontalMargin: 12,
-        minWidth: 600,
-        columns: columns,
-        rows: rows,
+      scrollDirection: Axis.horizontal,
+      child: Expanded(
+        child: DataTable2(
+          dataRowHeight: 100,
+          columnSpacing: 12,
+          horizontalMargin: 12,
+          minWidth: 600,
+          columns: columns,
+          rows: rows,
+        ),
       ),
-    ),
-  );
+    );
   }
 
   @override
